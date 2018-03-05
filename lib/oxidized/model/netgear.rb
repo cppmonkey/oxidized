@@ -17,7 +17,7 @@ class Netgear < Oxidized::Model
       post_login do
         send "enable\n"
         # Interpret enable: true as meaning we won't be prompted for a password
-        unless vars(:enable).is_a? TrueClass
+        unless vars(:enable).is_a? TrueClass or vars(:enable) == ""
           expect /[pP]assword:\s?$/
           send vars(:enable) + "\n"
         end
@@ -32,6 +32,10 @@ class Netgear < Oxidized::Model
     #
     # So it is safer simply to disconnect and not issue a pre_logout command
   end
+
+  cmd 'show switch'
+
+  cmd 'show bootvar'
 
   cmd 'show running-config' do |cfg|
     cfg.gsub! /^(!.*Time).*$/, '\1'
