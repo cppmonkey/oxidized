@@ -1,7 +1,6 @@
 class Vyatta < Oxidized::Model
-
   # Brocade Vyatta / VyOS model #
-  
+
   prompt /\@.*?\:~\$\s/
 
   cmd :all do |cfg|
@@ -9,6 +8,10 @@ class Vyatta < Oxidized::Model
   end
 
   cmd :secret do |cfg|
+    cfg.gsub! /encrypted-password (\S+).*/, 'encrypted-password <secret removed>'
+    cfg.gsub! /plaintext-password (\S+).*/, 'plaintext-password <secret removed>'
+    cfg.gsub! /password (\S+).*/, 'password <secret removed>'
+    cfg.gsub! /pre-shared-secret (\S+).*/, 'pre-shared-secret <secret removed>'
     cfg.gsub! /community (\S+) {/, 'community <hidden> {'
     cfg
   end
@@ -23,5 +26,4 @@ class Vyatta < Oxidized::Model
   cfg :telnet, :ssh do
     pre_logout 'exit'
   end
-
 end

@@ -1,5 +1,4 @@
 class Edgeos < Oxidized::Model
-
   # EdgeOS #
 
   prompt /\@.*?\:~\$\s/
@@ -9,6 +8,10 @@ class Edgeos < Oxidized::Model
   end
 
   cmd :secret do |cfg|
+    cfg.gsub! /encrypted-password (\S+).*/, 'encrypted-password <secret removed>'
+    cfg.gsub! /plaintext-password (\S+).*/, 'plaintext-password <secret removed>'
+    cfg.gsub! /password (\S+).*/, 'password <secret removed>'
+    cfg.gsub! /pre-shared-secret (\S+).*/, 'pre-shared-secret <secret removed>'
     cfg.gsub! /community (\S+) {/, 'community <hidden> {'
     cfg
   end
@@ -23,5 +26,4 @@ class Edgeos < Oxidized::Model
   cfg :telnet, :ssh do
     pre_logout 'exit'
   end
-
 end
