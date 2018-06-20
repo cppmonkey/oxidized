@@ -63,6 +63,8 @@
   * [TMOS (8800)](/lib/oxidized/model/corianttmos.rb)
   * [8600](/lib/oxidized/model/coriant8600.rb)
   * [Groove](/lib/oxidized/model/coriantgroove.rb)
+* ComNet
+  * [ComNet Microsemi Switch](/lib/oxidized/model/comnetms.rb)
 * Cumulus
   * [Linux](/lib/oxidized/model/cumulus.rb)
 * DataCom
@@ -74,12 +76,15 @@
   * [AOSW](/lib/oxidized/model/aosw.rb)
 * D-Link
   * [D-Link](/lib/oxidized/model/dlink.rb)
+* EdgeCore
+  * [ES3528M](/lib/oxidized/model/edgecos.rb)
 * Ericsson/Redback
   * [IPOS (former SEOS)](/lib/oxidized/model/ipos.rb)
 * Extreme Networks
   * [Enterasys](/lib/oxidized/model/enterasys.rb)
   * [WM](/lib/oxidized/model/mtrlrfs.rb)
   * [XOS](/lib/oxidized/model/xos.rb)
+  * [ExtremeWare](/lib/oxidized/model/xos.rb)
 * F5
   * [TMOS](/lib/oxidized/model/tmos.rb)
 * Fiberstore
@@ -127,6 +132,7 @@
   * [SR OS (TiMOS)](/lib/oxidized/model/sros.rb)
 * OneAccess
   * [OneOS](/lib/oxidized/model/oneos.rb)
+* [OpenBSD](/lib/oxidized/model/openbsd.rb)
 * Opengear
   * [Opengear](/lib/oxidized/model/opengear.rb)
 * [OpenWRT](/lib/oxidized/model/openwrt.rb)
