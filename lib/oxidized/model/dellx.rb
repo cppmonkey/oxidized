@@ -1,9 +1,11 @@
-class PowerConnect < Oxidized::Model
-  prompt /^([\w\s.@-]+(\(\S*\))?[#>]\s?)$/ # allow spaces in hostname..dell does not limit it.. #
+class DellX < Oxidized::Model
+  # Used in Dell X-Series Switches
+
+  prompt /[#>]$/
 
   comment '! '
 
-  expect /^\s*--More--\s+.*$/ do |data, re|
+  expect /(^.*)?+[mM]ore\:+.*$/ do |data, re|
     send ' '
     data.sub re, ''
   end
@@ -18,7 +20,7 @@ class PowerConnect < Oxidized::Model
   end
 
   cmd 'show version' do |cfg|
-    if (@stackable.nil?)
+    if @stackable.nil?
       @stackable = true if cfg.match /(U|u)nit\s/
     end
     cfg = cfg.split("\n").reject { |line| line[/Up\sTime/] }
@@ -26,7 +28,6 @@ class PowerConnect < Oxidized::Model
   end
 
   cmd 'show system' do |cfg|
-    @model = $1 if cfg.match /Power[C|c]onnect (\d{4})[P|F]?/
     clean cfg
   end
 
@@ -35,8 +36,8 @@ class PowerConnect < Oxidized::Model
   end
 
   cfg :telnet, :ssh do
-    username /^User( Name)?:/
-    password /^\r?Password:/
+    username /[uU]ser\s?[nN]ame:$/
+    password /[pP]assword:$/
   end
 
   cfg :telnet, :ssh do
@@ -47,8 +48,6 @@ class PowerConnect < Oxidized::Model
       end
     end
 
-    post_login "terminal datadump"
-    post_login "terminal length 0"
     pre_logout "logout"
     pre_logout "exit"
   end
@@ -58,7 +57,7 @@ class PowerConnect < Oxidized::Model
     skip_blocks = 0
     cfg.each_line do |line|
       # If this is a stackable switch we should skip this block of information
-      if (line.match /Up\sTime|Temperature|Power Suppl(ies|y)|Fans/i and @stackable == true)
+      if line.match /Up\sTime|Temperature|Power Suppl(ies|y)|Fans/i and @stackable == true
         skip_blocks = 1
         # Some switches have another empty line. This is identified by this line having a colon
         skip_blocks = 2 if line.match /:/

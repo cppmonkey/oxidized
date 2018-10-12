@@ -14,6 +14,11 @@ class NetScaler < Oxidized::Model
     comment cfg
   end
 
+  cmd :secret do |cfg|
+    cfg.gsub! /\w+\s(-encrypted)/, '<secret hidden> \\1'
+    cfg
+  end
+
   cmd 'show ns ns.conf'
 
   cfg :ssh do

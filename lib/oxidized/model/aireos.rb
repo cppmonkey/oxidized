@@ -6,7 +6,7 @@ class Aireos < Oxidized::Model
   prompt /^\([^)]+\)\s>/
 
   cmd :all do |cfg|
-    cfg.each_line.to_a[1..-2].join
+    cfg.cut_both
   end
 
   # show sysinfo?
@@ -44,6 +44,7 @@ class Aireos < Oxidized::Model
     cfg.each_line do |line|
       next if line.match /^\s*$/
       next if line.match /rogue (adhoc|client) (alert|Unknown) [\da-f]{2}:/
+
       line = line[1..-1] if line[0] == "\r"
       out << line.strip
     end

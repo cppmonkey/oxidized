@@ -14,15 +14,12 @@ class Netgear < Oxidized::Model
   end
 
   cfg :telnet, :ssh do
-    if vars :enable
-      post_login do
-        send "enable\n"
-        # Interpret enable: true as meaning we won't be prompted for a password
-        unless vars(:enable).is_a? TrueClass or vars(:enable) == ""
-          expect /[pP]assword:\s?$/
-          send vars(:enable) + "\n"
-        end
-        expect /^.+[#]$/
+    post_login do
+      if vars(:enable) == true
+        cmd "enable"
+      elsif vars(:enable)
+        cmd "enable", /[pP]assword:\s?$/
+        cmd vars(:enable)
       end
     end
     post_login 'terminal length 0'
@@ -33,10 +30,6 @@ class Netgear < Oxidized::Model
     #
     # So it is safer simply to disconnect and not issue a pre_logout command
   end
-
-  cmd 'show switch'
-
-  cmd 'show bootvar'
 
   cmd 'show running-config' do |cfg|
     cfg.gsub! /^(!.*Time).*$/, '\1'
