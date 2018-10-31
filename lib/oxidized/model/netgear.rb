@@ -34,4 +34,5 @@ class Netgear < Oxidized::Model
   cmd 'show running-config' do |cfg|
     cfg.gsub! /^(!.*Time).*$/, '\1'
   end
+  cmd 'show fiber-ports optics-info all'
 end
